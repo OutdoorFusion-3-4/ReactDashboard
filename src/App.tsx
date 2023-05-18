@@ -1,17 +1,15 @@
-import './App.css'
-import Login from './pages/Login/Login'
-//import RegisterComponent from './components/RegisterComponent'
+import './App.css';
+import Login from './pages/Login/Login';
+import RegisterComponent from './components/RegisterComponent';
+import React from 'react';
 
 function App() {
-  
 
-  return (
-    <>
-    <Login />
-  
- 
-    </>
-  )
+	return (
+		<>
+			<RegisterComponent />
+		</>
+	);
 }
 
-export default App
+export default App;
