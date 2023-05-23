@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Protected from '@components/Protected';
 import LoadingScreen from '@components/LoadingScreen/LoadingScreen';
+
 const Index = React.lazy(() => import('@pages/index/Index'));
 const Countries = React.lazy(() => import('@pages/countries/countries'));
 const Login = React.lazy(() => import('@pages/login/login'));
@@ -33,7 +34,6 @@ const router = createBrowserRouter([
 		path: '/login',
 		element: (
 			<Suspense fallback={<LoadingScreen />}>
-				{' '}
 				<Login />
 			</Suspense>
 		),
