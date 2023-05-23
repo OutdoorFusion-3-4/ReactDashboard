@@ -2,9 +2,21 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import React from 'react';
 
 export default function RegisterComponent() {
+
+	async function registerUser(data: Object) {
+
+		try {
+			const response = await axios.post('https://c80e5846-3798-4f42-8af7-230d2eb0a943.mock.pstmn.io/mock ', data);
+			console.log(response.data);
+		} catch (error) {
+			console.error(`Error occurred: ${error}`);
+
+		}
+	}
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
@@ -13,6 +25,7 @@ export default function RegisterComponent() {
 			email: data.get('email'),
 			password: data.get('password'),
 		});
+		registerUser(data);
 	};
 
 	return (

@@ -16,10 +16,13 @@ import React from 'react';
 export default function Login() {
 	const [open, setOpen] = React.useState(false);
 
+	const test = import.meta.env.MODE;
+			console.log(test);
+
 	async function verifyLogin(data: Object) {
 
 		try {
-			const response = await axios.post('https://c80e5846-3798-4f42-8af7-230d2eb0a943.mock.pstmn.io/mock ', data);
+						const response = await axios.post('http://127.0.0.1:8080/api/login ', data);
 			console.log(response.data);
 		} catch (error) {
 			console.error(`Error occurred: ${error}`);
