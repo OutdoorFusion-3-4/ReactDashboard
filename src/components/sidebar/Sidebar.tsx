@@ -16,9 +16,8 @@ function Sidebar() {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'flex-end',
-				px: [1],
 				position: 'relative',
-				width: '50px',
+				width: '80px',
 			}}
 			PaperProps={{
 				sx: {
@@ -28,7 +27,9 @@ function Sidebar() {
 		>
 			<Toolbar />
 			<Divider/>
-			<List>
+			<List sx={{
+				width: '80px',
+			}}>
 				{SideIcons.map((icon, index) => (
 					<ListItem key={index}>
 						<Tooltip

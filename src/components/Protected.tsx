@@ -39,11 +39,13 @@ function Protected(props: { children: JSX.Element }) {
 				overflow: 'auto',
 			}}
 		>
+			<Toolbar/>
 			<Container maxWidth='lg' sx={{
-				mt: 4, mb: 4
+				mt: 4,
+				mb: 4,
 			}}
 			>
-				<Toolbar/>
+				
 				{props.children}
 			</Container>
 		</Box>
