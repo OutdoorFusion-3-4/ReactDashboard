@@ -16,7 +16,7 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 function Uploads() {
 	const [files, setFiles] = React.useState<File[]>([]);
 	const [isDragOver, setIsDragOver] = React.useState(false);
-	const inputFile = React.useRef<unknown>(null);
+	const inputFile = React.useRef<HTMLInputElement | null>(null);
 	const [code, setCode] = React.useState(
 		'function add(a, b) {\n  return a + b;\n}'
 	);
