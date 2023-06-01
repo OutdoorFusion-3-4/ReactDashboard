@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -6,15 +5,46 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
+import * as EmailValidator from 'email-validator';
+import React from 'react';
 
 export default function Login() {
-	const handleSubmit = (event : any) => {
+	const [open, setOpen] = React.useState(false);
+
+	async function verifyLogin(data: object) {
+
+		try {
+			const response = await axios.post('https://c80e5846-3798-4f42-8af7-230d2eb0a943.mock.pstmn.io/mock ', data);
+			console.log(response.data);
+		} catch (error) {
+			console.error(`Error occurred: ${error}`);
+
+		}
+	}
+
+	const handleSubmit = (event: any) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
+		const email = data.get('email');
+		if (email) {
+			if (EmailValidator.validate(email.toString())) 
+				verifyLogin(data);
+			
+			else {
+				//do something
+				setOpen(true);
+				console.error('Email is not valid');
+			}
+		}
+		else {
+			//Handle error prop pup
+			console.error('Email is not defined');
+		}
 	};
 
 	return (
@@ -32,7 +62,7 @@ export default function Login() {
 				}}
 			>
 				<Typography component="h1" variant="h5">
-          Sign in
+					Sign in
 				</Typography>
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
@@ -59,13 +89,34 @@ export default function Login() {
 						control={<Checkbox value="remember" color="primary" />}
 						label="Remember me"
 					/>
+					<Collapse in={open}>
+						<Alert
+							severity="error"
+							action={
+								<IconButton
+									aria-label="close"
+									color="inherit"
+									size="small"
+									onClick={() => {
+										setOpen(false);
+									}}
+								>
+									<CloseIcon fontSize="inherit" />
+								</IconButton>
+							}
+							sx={{ mb: 2 }}
+						>
+							Please enter a valid email address
+						</Alert>
+					</Collapse>
+					
 					<Button
 						type="submit"
 						fullWidth
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-            Sign In
+						Sign In
 					</Button>
 				</Box>
 			</Box>
