@@ -1,13 +1,16 @@
 import React from 'react';
 import { Divider, Drawer, IconButton, List, ListItem, Toolbar, Tooltip } from '@mui/material';
 import { SideIcons } from './SideIcons';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-async function logoutFunction() {
+const navigate = useNavigate();
+
+async function HandleLogout() {
 	try{
 		await axios.post('http://[BackendIp]:8080/api/logout');
+		navigate('/login');
 	}
 	catch(error) {
 		console.error('Error occured: ' + error);
@@ -15,7 +18,7 @@ async function logoutFunction() {
 }
 
 function Sidebar() {
-	const navigate = useNavigate();
+	
 	return (
 		<Drawer
 			components={{
@@ -61,7 +64,7 @@ function Sidebar() {
 						placement="right"
 					>
 						<IconButton onClick={()=>{
-							logoutFunction();
+							HandleLogout();
 							
 						}}>
 							<LogoutIcon fontSize="large"/>
