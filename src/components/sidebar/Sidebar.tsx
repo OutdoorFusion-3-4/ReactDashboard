@@ -1,10 +1,24 @@
 import React from 'react';
 import { Divider, Drawer, IconButton, List, ListItem, Toolbar, Tooltip } from '@mui/material';
 import { SideIcons } from './SideIcons';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import LogoutIcon from '@mui/icons-material/Logout';
+
+const navigate = useNavigate();
+
+async function HandleLogout() {
+	try{
+		await axios.post('api/logout');
+		navigate('/login');
+	}
+	catch(error) {
+		console.error('Error occured: ' + error);
+	}
+}
 
 function Sidebar() {
-	const navigate = useNavigate();
+	
 	return (
 		<Drawer
 			components={{
@@ -42,6 +56,22 @@ function Sidebar() {
 						</Tooltip>
 					</ListItem>
 				))}
+			</List>
+			<List sx={{mt: 'auto'}}>
+				<ListItem>
+					<Tooltip 
+						title="Logout"
+						placement="right"
+					>
+						<IconButton onClick={()=>{
+							HandleLogout();
+							
+						}}>
+							<LogoutIcon fontSize="large"/>
+						</IconButton>
+					</Tooltip>
+				</ListItem>
+			
 			</List>
 		</Drawer>
 	);
