@@ -58,6 +58,14 @@ const router = createBrowserRouter([
 			</Protected>
 		),
 	},
+	{
+		path: '/login',
+		element: (
+			<Suspense fallback={<LoadingScreen />}>
+				<Login />
+			</Suspense>
+		),
+	}
 ]);
 
 function App() {
