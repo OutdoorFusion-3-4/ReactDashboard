@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 type MappingProps = {
 	file: File;
+	id: string;
 	removeFile: (name: string) => void;
 	setMapping: (id: string, code: string) => void;
 }
@@ -49,7 +50,10 @@ function Mapping(props: MappingProps) {
 						value={code}
 						language="json"
 						placeholder=""
-						onChange={(e) => setCode(e.target.value)}
+						onChange={(e) => {
+							setCode(e.target.value);
+							props.setMapping(props.id, e.target.value);
+						}}
 						padding={25}
 						style={{
 							fontSize: 12,

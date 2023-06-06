@@ -6,23 +6,29 @@ import {
 	CardContent,
 	CircularProgress,
 	Collapse,
-	IconButton,
 	Typography,
 } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import CodeEditor from '@uiw/react-textarea-code-editor';
 import axios from 'axios';
 import Mapping from './Mapping';
 
 function Uploads() {
 	const [files, setFiles] = React.useState<File[]>([]);
 	const [isDragOver, setIsDragOver] = React.useState(false);
-	const inputFile = React.useRef<unknown>(null);
+	const inputFile = React.useRef<HTMLInputElement | null>(null);
 	const [loading, setLoading] = React.useState(false);
 	const [mappings, setMappings] = React.useState<string[]>([]);
+
+	const updateMapping = (id: string, code: string) => {
+		setMappings(prev => {
+			const newMappings = [...prev];
+			newMappings[files.findIndex(file => file.name === id)] = code;
+			console.log(newMappings);
+			return newMappings;
+		});
+	};
     
 	const onButtonClick = () => {
 		const uploadBtn = inputFile.current as HTMLInputElement;
@@ -33,7 +39,9 @@ function Uploads() {
 	const removeFile = (name: string) => {
 		const newFiles = files.filter((file) => file.name !== name);
 		setFiles(newFiles);
+		setMappings(prev => prev.filter((_, i) => i !== files.findIndex(file => file.name === name)));
 	};
+
 	const handleFileUpload = (e: React.FormEvent<HTMLButtonElement>) => {
 		const target = e.target as HTMLInputElement;
 		if (!target.files) {
@@ -41,7 +49,7 @@ function Uploads() {
 		}
 		const files = Array.from(target.files);
 		setFiles(files);
-		console.log(files);
+		setMappings(prev => [...prev, '']);
 	};
 
 	const Submit = async () => {
@@ -49,7 +57,7 @@ function Uploads() {
 		const formData = new FormData();
 		files.forEach((file) => {
 			formData.append(file.name, file);
-			formData.append(`mapping_${file.name}`, JSON.stringify(code));
+			formData.append('mappings', JSON.stringify(mappings));
 
 		});
 		formData.append('file', files[0]);
@@ -139,12 +147,30 @@ function Uploads() {
 							key={file.name}
 						>
 							<Mapping
+								id={file.name}
 								removeFile={removeFile}
+								setMapping={updateMapping}
+								file={file}
 							/>
 						</Collapse>
 					);
 				})}
 			</TransitionGroup>
+			<Box
+				sx={{
+					mt: 2,
+				}}
+			>
+				<Button
+					disabled={files.length === 0 || loading || mappings.length === 0}
+					variant="contained"
+					color="primary"
+					onClick={Submit}
+				>
+					{loading? <CircularProgress/> : 'Submit'}
+				</Button>
+			</Box>
+
 		</Box>
 	);
 }
