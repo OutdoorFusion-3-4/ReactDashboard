@@ -19,8 +19,7 @@ export default function Login() {
 	async function verifyLogin(data: object) {
 
 		try {
-			const response = await axios.post('https://c80e5846-3798-4f42-8af7-230d2eb0a943.mock.pstmn.io/mock ', data);
-			console.log(response.data);
+			const response = await axios.post('/api/login ', data);
 		} catch (error) {
 			console.error(`Error occurred: ${error}`);
 
@@ -32,17 +31,14 @@ export default function Login() {
 		const data = new FormData(event.currentTarget);
 		const email = data.get('email');
 		if (email) {
-			if (EmailValidator.validate(email.toString())) 
+			if (EmailValidator.validate(email.toString()))
 				verifyLogin(data);
-			
 			else {
-				//do something
 				setOpen(true);
 				console.error('Email is not valid');
 			}
 		}
 		else {
-			//Handle error prop pup
 			console.error('Email is not defined');
 		}
 	};
@@ -109,7 +105,7 @@ export default function Login() {
 							Please enter a valid email address
 						</Alert>
 					</Collapse>
-					
+
 					<Button
 						type="submit"
 						fullWidth

@@ -10,8 +10,7 @@ export default function Register() {
 	async function registerUser(data: unknown) {
 
 		try {
-			const response = await axios.post('https://c80e5846-3798-4f42-8af7-230d2eb0a943.mock.pstmn.io/mock ', data);
-			console.log(response.data);
+			const response = await axios.post('/api/register ', data);
 		} catch (error) {
 			console.error(`Error occurred: ${error}`);
 
@@ -21,10 +20,6 @@ export default function Register() {
 	const handleSubmit = (event: any) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
 		registerUser(data);
 	};
 
