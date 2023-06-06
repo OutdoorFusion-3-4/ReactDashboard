@@ -11,36 +11,45 @@ import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import * as EmailValidator from 'email-validator';
-import React from 'react';
+import React, { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getCookie } from '@components/Protected';
 
 export default function Login() {
-	const [open, setOpen] = React.useState(false);
 
-	async function verifyLogin(data: object) {
+	const [open, setErrorOpen] = React.useState(false);
+	const navigate = useNavigate();
+	if (getCookie('Authenticated')) {
+		navigate('/');
+	}
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const data = {
+			email: formData.get('email'),
+			password: formData.get('password'),
+		};
+		if (!data.email) {
+			setErrorOpen(true);
+			return;
+		}
 
+		if (!EmailValidator.validate(data.email.toString())) {
+			setErrorOpen(true);
+		}
 		try {
-			const response = await axios.post('/api/login ', data);
+			await axios({
+				method: 'post',
+				url: '/api/login',
+				data: formData,
+				headers: { 'Content-Type': 'multipart/form-data' },
+			});
+			navigate('/');
 		} catch (error) {
 			console.error(`Error occurred: ${error}`);
 
 		}
-	}
 
-	const handleSubmit = (event: any) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		const email = data.get('email');
-		if (email) {
-			if (EmailValidator.validate(email.toString()))
-				verifyLogin(data);
-			else {
-				setOpen(true);
-				console.error('Email is not valid');
-			}
-		}
-		else {
-			console.error('Email is not defined');
-		}
 	};
 
 	return (
@@ -93,7 +102,7 @@ export default function Login() {
 									aria-label="close"
 									color="inherit"
 									size="small"
-									onClick={() => {setOpen(false)}}
+									onClick={() => {setErrorOpen(false);}}
 								>
 									<CloseIcon fontSize="inherit" />
 								</IconButton>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import Navbar from './navbar/Navbar';
 import { Box, Container, Toolbar } from '@mui/material';
-function getCookie(cookieName: string) {
+export function getCookie(cookieName: string) {
 	const cookies = document.cookie.split(';');
   
 	for (let i = 0; i < cookies.length; i++) {
@@ -11,7 +11,7 @@ function getCookie(cookieName: string) {
 		// Check if the cookie starts with the provided name
 		if (cookie.startsWith(cookieName + '=')) {
 			// Extract and return the cookie value
-			return cookie.substring(cookieName.length + 1);
+			return true;
 		}
 	}
   
@@ -20,7 +20,7 @@ function getCookie(cookieName: string) {
 }
   
 function Protected(props: { children: JSX.Element }) {
-	if (getCookie('Token')) {
+	if (!getCookie('Authenticated')) {
 		return <Navigate
 			to={'/login'}
 			replace
