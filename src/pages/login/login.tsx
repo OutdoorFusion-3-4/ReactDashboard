@@ -93,9 +93,7 @@ export default function Login() {
 									aria-label="close"
 									color="inherit"
 									size="small"
-									onClick={() => {
-										setOpen(false);
-									}}
+									onClick={() => {setOpen(false)}}
 								>
 									<CloseIcon fontSize="inherit" />
 								</IconButton>
