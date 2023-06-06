@@ -9,7 +9,7 @@ const navigate = useNavigate();
 
 async function HandleLogout() {
 	try{
-		await axios.post('http://[BackendIp]:8080/api/logout');
+		await axios.post('api/logout');
 		navigate('/login');
 	}
 	catch(error) {
